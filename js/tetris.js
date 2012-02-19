@@ -10,7 +10,7 @@ if ( !window.requestAnimationFrame ) {
 	})();
 }
 
-var Tetris = {};
+window.Tetris = window.Tetris  || {};
 
 Tetris.init = function() {
 	// set the scene size
@@ -79,6 +79,7 @@ Tetris.start = function() {
 	Tetris.pointsDOM = document.getElementById("points");
 	Tetris.pointsDOM.style.display = "block";
 
+  Tetris.Block.generate();
 	Tetris.animate();
 };
 
@@ -97,8 +98,8 @@ Tetris.animate = function() {
 	Tetris.cumulatedFrameTime += Tetris.frameTime;
 
 	while(Tetris.cumulatedFrameTime > Tetris.gameStepTime) {
-    // block movement will go here
 		Tetris.cumulatedFrameTime -= Tetris.gameStepTime;
+    Tetris.Block.move(0,0,-1);
 	}
 	
 	Tetris.renderer.render(Tetris.scene, Tetris.camera);
@@ -142,4 +143,49 @@ Tetris.addPoints = function(n) {
 }
 
 window.addEventListener("load", Tetris.init);
+
+window.addEventListener('keydown', function (event) {
+	var key = event.which ? event.which : event.keyCode;
+
+	switch(key) {
+		//case 
+
+		case 38: // up (arrow)
+			Tetris.Block.move(0, 1, 0);
+			break;
+		case 40: // down (arrow)
+			Tetris.Block.move(0, -1, 0);
+			break;
+		case 37: // left(arrow)
+			Tetris.Block.move(-1, 0, 0);
+			break;
+		case 39: // right (arrow)
+			Tetris.Block.move(1, 0, 0);
+			break;	
+		case 32: // space
+			Tetris.Block.move(0, 0, -1);
+			break;
+			
+		case 87: // up (w)
+			Tetris.Block.rotate(90, 0, 0);
+			break;
+		case 83: // down (s)
+			Tetris.Block.rotate(-90, 0, 0);
+			break;
+
+		case 65: // left(a)
+			Tetris.Block.rotate(0, 0, 90);
+			break;
+		case 68: // right (d)
+			Tetris.Block.rotate(0, 0, -90);
+			break;	
+
+		case 81: // (q)
+			Tetris.Block.rotate(0, 90, 0);
+			break;
+		case 69: // (e)	
+			Tetris.Block.rotate(0, -90, 0);
+			break;
+	}
+}, false);	
 
