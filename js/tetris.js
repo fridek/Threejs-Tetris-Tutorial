@@ -11,8 +11,16 @@ if (!window.requestAnimationFrame) {
 }
 
 window.Tetris = window.Tetris || {};
+Tetris.sounds = {};
 
 Tetris.init = function () {
+    Tetris.sounds["theme"] = document.getElementById("audio_theme");  
+    Tetris.sounds["collision"] = document.getElementById("audio_collision");  
+    Tetris.sounds["move"] = document.getElementById("audio_move");  
+    Tetris.sounds["gameover"] = document.getElementById("audio_gameover");  
+    Tetris.sounds["score"] = document.getElementById("audio_score");  
+
+    Tetris.sounds["theme"].play();
     // set the scene size
     var WIDTH = window.innerWidth,
         HEIGHT = window.innerHeight;
@@ -80,7 +88,9 @@ Tetris.start = function () {
     document.getElementById("menu").style.display = "none";
     Tetris.pointsDOM = document.getElementById("points");
     Tetris.pointsDOM.style.display = "block";
-
+	
+    Tetris.sounds["theme"].pause();
+	
     Tetris.Block.generate();
     Tetris.animate();
 };
@@ -141,6 +151,7 @@ Tetris.addPoints = function (n) {
     Tetris.currentPoints += n;
     Tetris.pointsDOM.innerHTML = Tetris.currentPoints;
     Cufon.replace('#points');
+    Tetris.sounds["score"].play();
 };
 
 window.addEventListener("load", Tetris.init);
